@@ -18,9 +18,9 @@ suspend fun saveImage(data: ByteArray, path: String) {
 
 fun getSavePathProvider(useOriginalName: Boolean): (Int, String) -> String {
     return if (useOriginalName) {
-        { _, url -> "images/${url.substringAfterLast('/')}.jpg" }
+        { _, url -> "images/original/${url.substringAfterLast('/')}.jpg" }
     } else {
-        { index, _ -> "images/image${index + 1}.jpg" }
+        { index, _ -> "images/renamed/image${index + 1}.jpg" }
     }
 }
 
@@ -28,7 +28,7 @@ fun downloadAndSaveImages(urls: List<String>, savePathProvider: (index: Int, url
     runBlocking {
         val client = HttpClient(CIO) {
             install(HttpTimeout) {
-                requestTimeoutMillis = 10_000
+                requestTimeoutMillis = 20_000
             }
         }
 
